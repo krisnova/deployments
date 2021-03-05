@@ -1,0 +1,5 @@
+#!/bin/bash
+REPO="krisnova"
+NAME="thenovadiary"
+TAG="latest"
+SHA="$(git rev-parse HEAD)"

@@ -1,0 +1,28 @@
+# github.com/ChimeraCoder/anaconda v2.0.0+incompatible
+## explicit
+github.com/ChimeraCoder/anaconda
+# github.com/ChimeraCoder/tokenbucket v0.0.0-20131201223612-c5a927568de7
+github.com/ChimeraCoder/tokenbucket
+# github.com/azr/backoff v0.0.0-20160115115103-53511d3c7330
+github.com/azr/backoff
+# github.com/dustin/go-jsonpointer v0.0.0-20160814072949-ba0abeacc3dc
+github.com/dustin/go-jsonpointer
+# github.com/dustin/gojson v0.0.0-20160307161227-2e71ec9dd5ad
+github.com/dustin/gojson
+# github.com/garyburd/go-oauth v0.0.0-20180319155456-bca2e7f09a17
+github.com/garyburd/go-oauth/oauth
+# github.com/kris-nova/logger v0.2.1
+## explicit
+github.com/kris-nova/logger
+# github.com/kris-nova/novaarchive v0.0.0-20210305065321-ece49ee548eb
+## explicit
+github.com/kris-nova/novaarchive/bot
+# github.com/kris-nova/photoprism-client-go v1.0.2
+## explicit
+github.com/kris-nova/photoprism-client-go
+github.com/kris-nova/photoprism-client-go/api/v1
+# github.com/kris-nova/thenovadiary v0.0.0-20210301001917-af225a7dba2f
+## explicit
+github.com/kris-nova/thenovadiary
+# golang.org/x/net v0.0.0-20210119194325-5f4716e94777
+golang.org/x/net/context
