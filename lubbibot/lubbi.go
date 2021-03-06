@@ -6,11 +6,11 @@ import (
 	"net/url"
 	"os"
 
-	"github.com/kris-nova/thenovadiary"
-
 	"github.com/ChimeraCoder/anaconda"
 	"github.com/kris-nova/logger"
 	"github.com/kris-nova/novaarchive/bot"
+	nphoto "github.com/kris-nova/novaarchive/photoprism"
+
 	"github.com/kris-nova/photoprism-client-go"
 )
 
@@ -33,9 +33,10 @@ func main() {
 		}
 
 		// --- Photo ---
-		photo, err := thenovadiary.FindNextPhotoInAlbum(client, albumID)
+		finder := nphoto.NewDefaultPhotoFinder(*client, albumID)
+		photo, err := finder.Find()
 		if err != nil {
-			return fmt.Errorf("Unable to FindNextPhotoInAlbum(): %v", err)
+			return fmt.Errorf("Unable to FindPhoto: %v", err)
 		}
 
 		pBytes, err := client.V1().GetPhotoDownload(photo.PhotoUID)
@@ -61,12 +62,13 @@ func main() {
 			return fmt.Errorf("unabble to send lubbi tweet: %v", err)
 		}
 		logger.Always("Sent tweet: https://twitter.com/%s/status/%s", sentTweet.User.ScreenName, sentTweet.IdStr)
-		today := thenovadiary.TimeToday()
-		data := thenovadiary.GetCustomData(*photo)
-		data.LastTweet = &today
-		err = thenovadiary.SetCustomData(data, photo)
+		data := nphoto.GetCustomData(*photo)
+		if data == nil {
+			data = &nphoto.CustomData{}
+		}
+		err = nphoto.SetCustomData(data, photo)
 		if err != nil {
-			return err
+			return fmt.Errorf("unable to set customdata: %v", err)
 		}
 		_, err = client.V1().UpdatePhoto(*photo)
 		if err != nil {
