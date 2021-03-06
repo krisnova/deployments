@@ -1,7 +1,6 @@
 FROM golang:1-alpine
 WORKDIR /go/src/github.com/kris-nova/deployments/lubbibot
 COPY . .
-# Go mod?
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /app
 
 # --- Multistage

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+	"time"
 
 	"github.com/ChimeraCoder/anaconda"
 	"github.com/kris-nova/logger"
@@ -33,7 +34,7 @@ func main() {
 		}
 
 		// --- Photo ---
-		finder := nphoto.NewDefaultPhotoFinder(client, albumID)
+		finder := nphoto.NewRandomPhotoFinder(client, albumID)
 		photo, err := finder.Find()
 		if err != nil {
 			return fmt.Errorf("Unable to FindPhoto: %v", err)
@@ -66,6 +67,8 @@ func main() {
 		if data == nil {
 			data = &nphoto.CustomData{}
 		}
+		now := time.Now()
+		data.LastTweet = &now
 		err = nphoto.SetCustomData(data, photo)
 		if err != nil {
 			return fmt.Errorf("unable to set customdata: %v", err)
