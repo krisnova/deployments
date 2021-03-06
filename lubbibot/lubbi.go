@@ -33,7 +33,7 @@ func main() {
 		}
 
 		// --- Photo ---
-		finder := nphoto.NewDefaultPhotoFinder(*client, albumID)
+		finder := nphoto.NewDefaultPhotoFinder(client, albumID)
 		photo, err := finder.Find()
 		if err != nil {
 			return fmt.Errorf("Unable to FindPhoto: %v", err)
