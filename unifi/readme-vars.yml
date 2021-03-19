@@ -1,0 +1,88 @@
+---
+
+# project information
+project_name: unifi-controller
+project_url: "https://www.ubnt.com/enterprise/#unifi"
+project_logo: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/unifi-banner.png"
+project_blurb: |
+  The [{{ project_name|capitalize }}]({{ project_url }}) Controller software is a powerful, enterprise wireless software engine ideal for high-density client deployments requiring low latency and high uptime performance.
+project_lsio_github_repo_url: "https://github.com/linuxserver/docker-{{ project_name }}"
+
+# supported architectures
+available_architectures:
+  - { arch: "{{ arch_x86_64 }}", tag: "amd64-latest"}
+  - { arch: "{{ arch_arm64 }}", tag: "arm64v8-latest"}
+  - { arch: "{{ arch_armhf }}", tag: "arm32v7-latest"}
+
+# optional container parameters
+opt_param_usage_include_env: true
+opt_param_env_vars:
+  - { env_var: "MEM_LIMIT", env_value: "1024M", desc: "Optionally change the Java memory limit (-Xmx) (default is 1024M)." }
+
+# Optional Block
+optional_block_1: true
+optional_block_1_items:
+  - |
+    ### Version Tags
+
+    This image provides various versions that are available via tags. `latest` tag provides the latest stable build from Unifi, but if this is a permanent setup you might consider using the LTS tag.
+   
+    | Tag    | Description                                  |
+    | :----: | -------------------------------------------- |
+    | latest | releases from the latest stable branch.      |
+    | LTS    | DEPRECATED - releases from the now EOL 5.6.x "LTS Stable" branch. |
+    | 5.9    | DEPRECATED - releases from the now EOL 5.9.x branch.      |
+    | 5.8    | DEPRECATED - releases from the now EOL 5.8.x branch.      |
+    | 5.7    | DEPRECATED - releases from the now EOL 5.7.x branch.      |
+    
+    ## Common problems
+    When using a Security Gateway (router) it could be that network connected devices are unable to obtain an ip address. This can be fixed by setting "DHCP Gateway IP", under Settings > Networks > network_name, to a correct (and accessable) ip address.
+
+# container parameters
+param_container_name: "{{ project_name }}"
+param_usage_include_vols: true
+param_volumes:
+  - { vol_path: "/config", vol_host_path: "<path to data>", desc: "All Unifi data stored here" }
+
+param_usage_include_ports: true
+param_ports:
+  - { external_port: "3478", internal_port: "3478/udp", port_desc: "Unifi STUN port" }
+  - { external_port: "10001", internal_port: "10001/udp", port_desc: "Required for AP discovery" }
+  - { external_port: "8080", internal_port: "8080", port_desc: "Required for device communication" }
+  - { external_port: "8443", internal_port: "8443", port_desc: "Unifi web admin port" }
+param_usage_include_env: false
+
+opt_param_usage_include_ports: true
+opt_param_ports:
+  - { external_port: "1900", internal_port: "1900/udp", port_desc: "Required for `Make controller discoverable on L2 network` option" }
+  - { external_port: "8843", internal_port: "8843", port_desc: "Unifi guest portal HTTPS redirect port" }
+  - { external_port: "8880", internal_port: "8880", port_desc: "Unifi guest portal HTTP redirect port" }
+  - { external_port: "6789", internal_port: "6789", port_desc: "For mobile throughput test" }
+  - { external_port: "5514", internal_port: "5514/udp", port_desc: "Remote syslog port" }
+
+# application setup block
+app_setup_block_enabled: true
+app_setup_block: |
+  The webui is at https://ip:8443, setup with the first run wizard.
+
+  For Unifi to adopt other devices, e.g. an Access Point, it is required to change the inform ip address. Because Unifi runs inside Docker by default it uses an ip address not accessable by other devices. To change this go to Settings > Controller > Controller Settings and set the Controller Hostname/IP to an ip address accessable by other devices.
+
+  Alternatively to manually adopt a device take these steps:
+
+  ```
+  ssh ubnt@$AP-IP
+  set-inform http://$address:8080/inform
+  ```
+
+  Use `ubnt` as the password to login and `$address` is the IP address of the host you are running this container on and `$AP-IP` is the Access Point IP address.
+
+# changelog
+changelogs:
+  - { date: "12.01.21:", desc: "Deprecate the `LTS` tag as Unifi no longer releases LTS stable builds. Existing users can switch to the `latest` tag. Direct upgrade from 5.6.42 (LTS) to 6.0.42 (latest) tested successfully."}
+  - { date: "17.07.20:", desc: "Rebase 64 bit containers to Bionic and Mongo 3.6."}
+  - { date: "16.06.20:", desc: "Add logrotate."}
+  - { date: "02.06.20:", desc: "Updated port list & descriptions. Moved some ports to optional."}
+  - { date: "14.11.19:", desc: "Changed url for deb package to match new Ubiquity domain." }
+  - { date: "29.07.19:", desc: "Allow for changing Java mem limit via new optional environment variable." }
+  - { date: "23.03.19:", desc: "Switching to new Base images, shift to arm32v7 tag." }
+  - { date: "10.02.19:", desc: "Initial release of new unifi-controller image with new tags and pipeline logic" }

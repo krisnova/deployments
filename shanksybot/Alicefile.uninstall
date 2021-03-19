@@ -1,0 +1,2 @@
+#!/bin/bash
+kubectl delete -f /home/nova/home/secrets/deployments.yaml

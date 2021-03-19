@@ -1,0 +1,6 @@
+#!/bin/bash
+REPO="krisnova"
+NAME="unifi"
+TAG="latest"
+SHA="$(git rev-parse HEAD)"
+

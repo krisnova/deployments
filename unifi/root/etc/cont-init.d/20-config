@@ -1,0 +1,23 @@
+#!/usr/bin/with-contenv bash
+
+# create our folders
+mkdir -p \
+	/config/{data,logs,run}
+
+
+# create symlinks for config
+symlinks=( \
+/usr/lib/unifi/data \
+/usr/lib/unifi/logs \
+/usr/lib/unifi/run )
+
+for i in "${symlinks[@]}"
+do
+[[ -L "$i" && ! "$i" -ef /config/"$(basename "$i")"  ]] && unlink "$i"
+[[ ! -L "$i" ]] && ln -s /config/"$(basename "$i")" "$i"
+done
+
+# permissions
+chown -R abc:abc \
+	/config \
+	/usr/lib/unifi
